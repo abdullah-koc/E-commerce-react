@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
     productImg: {
         maxWidth: "90px",
-        height: "90px",
+        maxHeight: "90px",
     },
     imgContainer: {
         width: "120px",
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     productName: {
-        fontSize: "14px",
+        fontSize: "13px",
         maxWidth: "124px",
         height: "30px",
         overflowWrap: "break-word"

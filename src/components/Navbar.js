@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     container: {
-        height: "375px",
+        height: "40px",
         zIndex: "1",
         "@media screen and (min-width: 1500px)": {
             display: "none"

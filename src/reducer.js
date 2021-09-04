@@ -29,46 +29,31 @@ function splitMugAndShirt(products = []) {
 const reducer = (state, action) => {
     if (action.type === "ADD_TO_CARD") {
         const tempPr = state.allProducts;
-        const pr = tempPr.filter((product) => {
-            if (product.added === action.payload.id) {
-                return product
-            }
-        })
-        const toAdd = pr[0]
-        const temp = state.productsInList.filter((product) => (product.added === toAdd.added))
+        const pr = tempPr.find((product) => product.added === action.payload.id)
+        const temp = state.productsInList.filter((product) => (product.added === pr.added))
         const beforeAdd = state.productsInList;
         if (temp.length === 0) {
-            beforeAdd.push(toAdd)
+            beforeAdd.push(pr)
         }
-        toAdd.amount++;
+        pr.amount++;
 
-        return { ...state, total: state.total + toAdd.price, productsInList: beforeAdd }
+        return { ...state, total: state.total + pr.price, productsInList: beforeAdd }
     }
     else if (action.type === "INCREASE_AMOUNT") {
         const tempPr = state.allProducts;
-        const pr = tempPr.filter((product) => {
-            if (product.added === action.payload.productID) {
-                return product
-            }
-        })
-        const toIncrease = pr[0];
-        toIncrease.amount++;
-        return { ...state, total: state.total + toIncrease.price }
+        const pr = tempPr.find((product) => product.added === action.payload.productID)
+        pr.amount++;
+        return { ...state, total: state.total + pr.price }
     }
     else if (action.type === "DECREASE_AMOUNT") {
         const tempPr = state.allProducts;
-        const pr = tempPr.filter((product) => {
-            if (product.added === action.payload.productID) {
-                return product
-            }
-        })
-        const toDecrease = pr[0];
-        toDecrease.amount--;
+        const pr = tempPr.find((product) => product.added === action.payload.productID)
+        pr.amount--;
         let tempList = state.productsInList;
-        if (toDecrease.amount === 0) {
+        if (pr.amount === 0) {
             tempList = tempList.filter((product) => product.added !== action.payload.productID)
         }
-        return { ...state, total: state.total - toDecrease.price, productsInList: tempList }
+        return { ...state, total: state.total - pr.price, productsInList: tempList }
     }
     else if (action.type === "LOW_TO_HIGH") {
         const sorted = sortItems(state.products, "price", 1)
@@ -109,8 +94,24 @@ const reducer = (state, action) => {
         if(newProducts.length === 0){
             newProducts = state.allProducts
         }
-        const {mugs, shirts} = splitMugAndShirt(newProducts)
-        return {...state, products:newProducts, mugProducts: mugs, shirtProducts: shirts}
+        let res = []
+        let tags = state.tags
+        for(let i = 0; i < tags.length; i++){
+            for(let j = 0; j < newProducts.length; j++){
+                for(let k = 0; k < newProducts[j].tags.length; k++ ){
+                    if(tags[i].isChecked){
+                        if(newProducts[j].tags[k] === tags[i].tagName){
+                            res.push(newProducts[j])
+                        }
+                    }
+                }
+            }
+        }
+        if(res.length === 0){
+            res = newProducts
+        }
+        const {mugs, shirts} = splitMugAndShirt(res)
+        return {...state, products:res, mugProducts: mugs, shirtProducts: shirts}
     }
     else if(action.type === "CHANGE_CHECKED_TAGFILTER"){
         const tagName = action.payload.tagName
@@ -133,8 +134,22 @@ const reducer = (state, action) => {
         if(newProducts2.length === 0){
             newProducts2 = state.allProducts
         }
-        const {mugs, shirts} = splitMugAndShirt(newProducts2)
-        return {...state, products:newProducts2, mugProducts: mugs, shirtProducts: shirts}
+        let res = []
+        let comps = state.companies
+        for(let i = 0; i < comps.length; i++){
+            for(let j = 0; j < newProducts2.length; j++){
+                if(comps[i].isChecked){
+                    if(newProducts2[j].manufacturer === comps[i].slug){
+                        res.push(newProducts2[j])
+                    }
+                }   
+            }
+        }
+        if(res.length === 0){
+            res = newProducts2
+        }
+        const {mugs, shirts} = splitMugAndShirt(res)
+        return {...state, products:res, mugProducts: mugs, shirtProducts: shirts}
     }
     return state;
 }
