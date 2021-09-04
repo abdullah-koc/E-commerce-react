@@ -6,7 +6,8 @@ import logo from "../images/Navbar/logo.png"
 import Button from '@material-ui/core/Button';
 import ShoppingList from './ShoppingList';
 import React from 'react';
-
+import {connect} from "react-redux"
+import clsx from "clsx"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         color: "white"
     },
+    totalText: {
+        fontSize: "90%",
+        marginTop: "4px"
+    },
     logoImage: {
         display: "flex",
         justifyContent: "center",
@@ -65,9 +70,12 @@ const useStyles = makeStyles((theme) => ({
         height: "40px",
         marginTop: "16px"
     },
+    boxIcon: {
+        maxHeight: "28px"
+    }
 }));
 
-const Navbar = () => {
+const Navbar = ({total}) => {
     const classes = useStyles();
     const [isListVisible, setIsListVisible] = React.useState(false);
     return (
@@ -82,10 +90,9 @@ const Navbar = () => {
                         <div className={classes.toRight}>
                             <Button className={classes.shoppingBox} onClick={() =>  setIsListVisible(!isListVisible)}>
                                 <Grid container>
-                                    <Grid item xs={2}></Grid>
-                                    <Grid className={classes.centerShoppingBox} item xs={3}><img src={basket} alt="basket" /></Grid>
-                                    <Grid className={classes.centerShoppingBox} item xs={5}><div>₺ 0.00</div></Grid>
-                                    <Grid item xs={2}></Grid>
+                                    <Grid className={clsx(classes.centerShoppingBox, classes.boxIcon)} item xs={4}><img src={basket} alt="basket" /></Grid>
+                                    <Grid className={clsx(classes.centerShoppingBox, classes.totalText)} item xs={7}><div>₺ {total.toFixed(2) === "-0.00" ? "0.00" : total.toFixed(2)}</div></Grid>
+                                    <Grid item xs={1}></Grid>
                                 </Grid>
                             </Button>
                         </div>
@@ -97,4 +104,8 @@ const Navbar = () => {
     );
 }
 
-export default Navbar;
+const mapStateToProps = (state) => {
+    return{ total: state.total}
+}
+
+export default connect(mapStateToProps)(Navbar);

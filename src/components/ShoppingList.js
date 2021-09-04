@@ -1,6 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import SingleShoppingListItem from './SingleComponents/SingleShoppingListItem';
 import Grid from '@material-ui/core/Grid';
+import {connect} from "react-redux"
+import {RiErrorWarningFill} from 'react-icons/ri';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -8,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         minHeight: "40px",
+        borderRadius: "5px",
         width: "280px",
         border: "8px solid #1EA4CE",
         background: "white",
@@ -16,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
         "@media screen and (min-width: 1280px)": {
             marginTop: "20px",
         },
+    },
+    emptyText: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "orange",        
     },
     totalAmount: {
         width: "90px",
@@ -32,19 +41,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ShoppingList = () => {
-    const classes = useStyles();
+const ShoppingList = ({total, productsInList}) => {
+    const classes = useStyles();    
     return (
         <div className={classes.box}>
-            <SingleShoppingListItem/>
-            <SingleShoppingListItem/>
-            <SingleShoppingListItem/>
-            <Grid container>
+            {productsInList.length === 0 && <div className={classes.emptyText}><RiErrorWarningFill size={30}/> Basket is empty.</div>}
+            {productsInList.map((productInList) => <SingleShoppingListItem productID={productInList.added} productName={productInList.name} amount={productInList.amount} productPrice={productInList.price}/>)}
+            {productsInList.length !== 0 && <Grid container>
                 <Grid item xs={7}></Grid>
-                <Grid item xs={5}><div className={classes.totalAmount}>₺ 10.99</div></Grid>
-            </Grid>
+                <Grid item xs={5}><div className={classes.totalAmount}>₺ {total.toFixed(2) === "-0.00" ? "0.00" : total.toFixed(2)}</div></Grid>
+            </Grid>}
         </div>
     );
 }
 
-export default ShoppingList;
+const mapStateToProps = (state) => {
+    return{total: state.total, productsInList: state.productsInList}
+}
+
+
+export default connect(mapStateToProps)(ShoppingList);

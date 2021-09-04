@@ -1,9 +1,9 @@
 import React from 'react';
 import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import {connect} from "react-redux"
+import SingleTagItem from "./SingleComponents/SingleTagItem"
+import loadingGIF from "../images/loading.gif"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
         "@media screen and (max-width: 960px)": {
             width: "90%"
         },
-
     },
     searchBar: {
         width: "235px",
@@ -46,145 +45,60 @@ const useStyles = makeStyles((theme) => ({
     },
     marginTop: {
         marginTop: "12.8px"
+    },
+    loadinggif: {
+        display: "block",
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: "50%",
     }
 }));
 
-
-const TagsFilter = () => {
+const TagsFilter = ({tags, tagCount}) => {
 
     const classes = useStyles();
+    const [loading, setLoading] = React.useState(true);
+    const [tagsToShow, setTagsToShow] = React.useState([])
 
-    const [state, setState] = React.useState({
-        checkedA: true,
-        checkedB: true,
-        checkedC: true,
-        checkedD: true,
-    });
+    React.useEffect(() => {
+        if (tags.length !== 0) {
+            setLoading(false)
+        }
+        setTagsToShow(tags)
+    }, [tags])
 
-    const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-    };
-
+    const filterTags = (e) => {
+        e.preventDefault()
+        const filteredTags = []
+        for(let i = 0; i < tags.length; i++){
+            for(let j = 0; j < tags[i].tagName.length; j++){
+                for(let k = j; k < tags[i].tagName.length; k++){
+                    if(tags[i].tagName.toLowerCase().substring(j,k) === e.target.value){
+                        filteredTags.push(tags[i])
+                    }
+                }
+            }
+        }
+        const uniqueFT = Array.from(new Set(filteredTags.map(tag => tag.tagName))).map(tagName => {
+            return filteredTags.find(tag => tag.tagName === tagName)
+        })
+        setTagsToShow(uniqueFT)
+    }
     return (
         <>
             <h5>Tags</h5>
             <div className={classes.tagsBox}>
-
                 <div>
-                    <input type="text" placeholder="Search tags" className={classes.searchBar} />
+                    <input type="text" onChange={filterTags} placeholder="Search tags" className={classes.searchBar} />
                 </div>
                 <div className={classes.insideBox}>
-                    <FormGroup>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.checkedA} color="default" onChange={handleChange} name="checkedA" />}
-                                />
-                            </Grid>
-                            <Grid item xs={10}>
-                                <div className={classes.marginTop}>Brand 1</div>
-                            </Grid>
-                        </Grid>
+                {loading && <div className={classes.loadinggif}><img src={loadingGIF} alt="loading" /></div>}
+                <FormGroup>
+                        {tagsToShow.map((tag, index) => {
+                            return (
+                                <SingleTagItem tags={tags} tagName={tag.tagName} tagNum={tagCount[index]}/>
+                            );
+                        })}
 
                     </FormGroup>
                 </div>
@@ -193,5 +107,8 @@ const TagsFilter = () => {
     );
 }
 
+const mapStateToProps = (state) => {
+    return {tags: state.tags, tagCount: state.tagCount}
+}
 
-export default TagsFilter;
+export default connect(mapStateToProps)(TagsFilter);

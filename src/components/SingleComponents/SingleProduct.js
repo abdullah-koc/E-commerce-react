@@ -1,6 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 import exampleImage from "../../images/exampleImage.png"
 import Button from '@material-ui/core/Button';
+import { connect } from "react-redux"
+import React from "react";
+import Slide from '@material-ui/core/Slide';
+import { useSnackbar } from 'notistack';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     price: {
         color: "#1EA4CE",
         marginTop: "12px",
-        marginBottom:"4px"
+        marginBottom: "4px"
     },
     addButton: {
         background: "#1EA4CE",
@@ -45,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
             boxShadow: 'none',
         },
     },
-    productName:{
+    productName: {
         fontSize: "14px",
         maxWidth: "124px",
         height: "30px",
@@ -54,8 +58,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const SingleProduct = (props) => {
+const SingleProduct = ({ price, id, productName, addToCard }) => {
     const classes = useStyles();
+
+    const { enqueueSnackbar } = useSnackbar();
+
     return (
         <div className={classes.productBox}>
             <div className={classes.imgContainer}>
@@ -63,11 +70,30 @@ const SingleProduct = (props) => {
                     <img src={exampleImage} alt="" />
                 </div>
             </div>
-            <div className={classes.price}>₺ {props.price}</div>
-            <div className={classes.productName}>{props.productName}</div>
-            <div ><Button className={classes.addButton} onClick={() =>console.log("tıklandı")}>Add</Button></div>
+            <div className={classes.price}>₺ {price}</div>
+            <div className={classes.productName}>{productName}</div>
+            <div ><Button className={classes.addButton} onClick={() => {
+                addToCard()
+                enqueueSnackbar("Added to basket", { 
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    },
+                    TransitionComponent: Slide,
+                },)
+            }}>Add</Button></div>
         </div>
     );
 }
 
-export default SingleProduct;
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const { id } = ownProps;
+    return {
+        addToCard: () => dispatch({ type: "ADD_TO_CARD", payload: { id } })
+    }
+}
+
+
+export default connect(null, mapDispatchToProps)(SingleProduct);
