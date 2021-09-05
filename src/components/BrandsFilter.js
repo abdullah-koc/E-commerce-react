@@ -62,30 +62,28 @@ const BrandsFilter = ({companies, companyCount}) => {
     const [loading, setLoading] = React.useState(true);
     const classes = useStyles();
     const [companiesToShow, setCompaniesToShow] = React.useState([])
+    const [compCount, setCompCount] = React.useState([])
 
     React.useEffect(() => {
         if (companies.length !== 0) {
             setLoading(false)
         }
         setCompaniesToShow(companies)
+        setCompCount(companyCount)
     }, [companies, companyCount])
 
     const filterBrands = (e) => {
         e.preventDefault()
-        const filteredBrands = []
-        for(let i = 0; i < companies.length; i++){
-            for(let j = 0; j < companies[i].slug.length; j++){
-                for(let k = j; k < companies[i].slug.length; k++){
-                    if(companies[i].slug.toLowerCase().substring(j,k) === e.target.value){
-                        filteredBrands.push(companies[i])
-                    }
-                }
+        let filteredBrands = []
+        let filteredCounts = []
+        companies.map((company, index) => {
+            if(company.slug.toLowerCase().includes(e.target.value)){
+                filteredBrands.push(company)
+                filteredCounts.push(companyCount[index])
             }
-        }
-        const uniqueFB = Array.from(new Set(filteredBrands.map(brand => brand.slug))).map(slug => {
-            return filteredBrands.find(brand => brand.slug === slug)
         })
-        setCompaniesToShow(uniqueFB)
+        setCompaniesToShow(filteredBrands)
+        setCompCount(filteredCounts)
     }
 
     return (
@@ -101,7 +99,7 @@ const BrandsFilter = ({companies, companyCount}) => {
                         <Grid container>
                             {companiesToShow.map((company, index) => {
                                 return (
-                                    <SingleBrandItem companyName={company.slug} key={company.account} id={company.account} count={companyCount[index]} />
+                                    <SingleBrandItem companyName={company.slug} key={company.account} id={company.account} count={compCount[index]} />
                                 );
                             })}
                         </Grid>

@@ -59,30 +59,28 @@ const TagsFilter = ({ tags, tagCount }) => {
     const classes = useStyles();
     const [loading, setLoading] = React.useState(true);
     const [tagsToShow, setTagsToShow] = React.useState([])
+    const [tCount, setTCount] = React.useState([])
 
     React.useEffect(() => {
         if (tags.length !== 0) {
             setLoading(false)
         }
         setTagsToShow(tags)
+        setTCount(tagCount)
     }, [tags, tagCount])
 
     const filterTags = (e) => {
         e.preventDefault()
-        const filteredTags = []
-        for (let i = 0; i < tags.length; i++) {
-            for (let j = 0; j < tags[i].tagName.length; j++) {
-                for (let k = j; k < tags[i].tagName.length; k++) {
-                    if (tags[i].tagName.toLowerCase().substring(j, k) === e.target.value) {
-                        filteredTags.push(tags[i])
-                    }
-                }
+        let filteredTags = []
+        let filteredTagCounts = []
+        tags.map((tag, index) => {
+            if(tag.tagName.toLowerCase().includes(e.target.value)){
+                filteredTags.push(tag)
+                filteredTagCounts.push(tagCount[index])
             }
-        }
-        const uniqueFT = Array.from(new Set(filteredTags.map(tag => tag.tagName))).map(tagName => {
-            return filteredTags.find(tag => tag.tagName === tagName)
         })
-        setTagsToShow(uniqueFT)
+        setTagsToShow(filteredTags)
+        setTCount(filteredTagCounts)
     }
     return (
         <>
@@ -96,7 +94,7 @@ const TagsFilter = ({ tags, tagCount }) => {
                     {!loading && <FormGroup>
                         {tagsToShow.map((tag, index) => {
                             return (
-                                <SingleTagItem tags={tags} tagName={tag.tagName} tagNum={tagCount[index]} />
+                                <SingleTagItem tags={tags} tagName={tag.tagName} tagNum={tCount[index]} />
                             );
                         })}
 
