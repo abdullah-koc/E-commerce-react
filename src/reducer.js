@@ -1,3 +1,6 @@
+import {ADD_TO_CARD, INCREASE_AMOUNT, DECREASE_AMOUNT, LOW_TO_HIGH, HIGH_TO_LOW, NEW_TO_OLD
+, OLD_TO_NEW, CHANGE_CHECKED_BRANDFILTER, CHANGE_CHECKED_TAGFILTER} from "./actions"
+
 function sortItems(arr = [], prop = "", type = 1) {
     arr.sort(
         function (a, b) {
@@ -27,7 +30,7 @@ function splitMugAndShirt(products = []) {
 }
 
 const reducer = (state, action) => {
-    if (action.type === "ADD_TO_CARD") {
+    if (action.type === ADD_TO_CARD) {
         const tempPr = state.allProducts;
         const pr = tempPr.find((product) => product.added === action.payload.id)
         const temp = state.productsInList.filter((product) => (product.added === pr.added))
@@ -39,13 +42,13 @@ const reducer = (state, action) => {
 
         return { ...state, total: state.total + pr.price, productsInList: beforeAdd }
     }
-    else if (action.type === "INCREASE_AMOUNT") {
+    else if (action.type === INCREASE_AMOUNT) {
         const tempPr = state.allProducts;
         const pr = tempPr.find((product) => product.added === action.payload.productID)
         pr.amount++;
         return { ...state, total: state.total + pr.price }
     }
-    else if (action.type === "DECREASE_AMOUNT") {
+    else if (action.type === DECREASE_AMOUNT) {
         const tempPr = state.allProducts;
         const pr = tempPr.find((product) => product.added === action.payload.productID)
         pr.amount--;
@@ -55,27 +58,27 @@ const reducer = (state, action) => {
         }
         return { ...state, total: state.total - pr.price, productsInList: tempList }
     }
-    else if (action.type === "LOW_TO_HIGH") {
+    else if (action.type === LOW_TO_HIGH) {
         const sorted = sortItems(state.products, "price", 1)
         const {mugs, shirts} = splitMugAndShirt(sorted)
         return { ...state, products: sorted, mugProducts: mugs, shirtProducts: shirts }
     }
-    else if (action.type === "HIGH_TO_LOW") {
+    else if (action.type === HIGH_TO_LOW) {
         const sorted = sortItems(state.products, "price", -1)
         const {mugs, shirts} = splitMugAndShirt(sorted)
         return { ...state, products: sorted, mugProducts: mugs, shirtProducts: shirts }
     }
-    else if (action.type === "NEW_TO_OLD") {
+    else if (action.type === NEW_TO_OLD) {
         const sorted = sortItems(state.products, "added", 1)
         const {mugs, shirts} = splitMugAndShirt(sorted)
         return { ...state, products: sorted, mugProducts: mugs, shirtProducts: shirts }
     }
-    else if (action.type === "OLD_TO_NEW") {
+    else if (action.type === OLD_TO_NEW) {
         const sorted = sortItems(state.products, "added", -1)
         const {mugs, shirts} = splitMugAndShirt(sorted)
         return { ...state, products: sorted, mugProducts: mugs, shirtProducts: shirts }
     }
-    else if(action.type === "CHANGE_CHECKED_BRANDFILTER"){
+    else if(action.type === CHANGE_CHECKED_BRANDFILTER){
         const companyID = action.payload.id
         const obj = state.companies.find((company)=> company.account === companyID)
         obj.isChecked = !obj.isChecked
@@ -113,7 +116,7 @@ const reducer = (state, action) => {
         const {mugs, shirts} = splitMugAndShirt(res)
         return {...state, products:res, mugProducts: mugs, shirtProducts: shirts}
     }
-    else if(action.type === "CHANGE_CHECKED_TAGFILTER"){
+    else if(action.type === CHANGE_CHECKED_TAGFILTER){
         const tagName = action.payload.tagName
         const obj = state.tags.find((tag)=> tag.tagName === tagName)
         obj.isChecked = !obj.isChecked

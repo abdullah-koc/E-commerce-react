@@ -68,7 +68,7 @@ const BrandsFilter = ({companies, companyCount}) => {
             setLoading(false)
         }
         setCompaniesToShow(companies)
-    }, [companies])
+    }, [companies, companyCount])
 
     const filterBrands = (e) => {
         e.preventDefault()
@@ -97,7 +97,7 @@ const BrandsFilter = ({companies, companyCount}) => {
                 </div>
                 <div className={classes.insideBox}>
                     {loading && <div className={classes.loadinggif}><img src={loadingGIF} alt="loading" /></div>}
-                    <FormGroup>
+                    {!loading && <FormGroup>
                         <Grid container>
                             {companiesToShow.map((company, index) => {
                                 return (
@@ -105,7 +105,7 @@ const BrandsFilter = ({companies, companyCount}) => {
                                 );
                             })}
                         </Grid>
-                    </FormGroup>
+                    </FormGroup>}
                 </div>
             </div>
         </>

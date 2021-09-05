@@ -1,7 +1,7 @@
 import React from 'react';
 import FormGroup from '@material-ui/core/FormGroup';
 import { makeStyles } from '@material-ui/core/styles';
-import {connect} from "react-redux"
+import { connect } from "react-redux"
 import SingleTagItem from "./SingleComponents/SingleTagItem"
 import loadingGIF from "../images/loading.gif"
 
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const TagsFilter = ({tags, tagCount}) => {
+const TagsFilter = ({ tags, tagCount }) => {
 
     const classes = useStyles();
     const [loading, setLoading] = React.useState(true);
@@ -65,15 +65,15 @@ const TagsFilter = ({tags, tagCount}) => {
             setLoading(false)
         }
         setTagsToShow(tags)
-    }, [tags])
+    }, [tags, tagCount])
 
     const filterTags = (e) => {
         e.preventDefault()
         const filteredTags = []
-        for(let i = 0; i < tags.length; i++){
-            for(let j = 0; j < tags[i].tagName.length; j++){
-                for(let k = j; k < tags[i].tagName.length; k++){
-                    if(tags[i].tagName.toLowerCase().substring(j,k) === e.target.value){
+        for (let i = 0; i < tags.length; i++) {
+            for (let j = 0; j < tags[i].tagName.length; j++) {
+                for (let k = j; k < tags[i].tagName.length; k++) {
+                    if (tags[i].tagName.toLowerCase().substring(j, k) === e.target.value) {
                         filteredTags.push(tags[i])
                     }
                 }
@@ -92,15 +92,15 @@ const TagsFilter = ({tags, tagCount}) => {
                     <input type="text" onChange={filterTags} placeholder="Search tags" className={classes.searchBar} />
                 </div>
                 <div className={classes.insideBox}>
-                {loading && <div className={classes.loadinggif}><img src={loadingGIF} alt="loading" /></div>}
-                <FormGroup>
+                    {loading && <div className={classes.loadinggif}><img src={loadingGIF} alt="loading" /></div>}
+                    {!loading && <FormGroup>
                         {tagsToShow.map((tag, index) => {
                             return (
-                                <SingleTagItem tags={tags} tagName={tag.tagName} tagNum={tagCount[index]}/>
+                                <SingleTagItem tags={tags} tagName={tag.tagName} tagNum={tagCount[index]} />
                             );
                         })}
 
-                    </FormGroup>
+                    </FormGroup>}
                 </div>
             </div>
         </>
@@ -108,7 +108,7 @@ const TagsFilter = ({tags, tagCount}) => {
 }
 
 const mapStateToProps = (state) => {
-    return {tags: state.tags, tagCount: state.tagCount}
+    return { tags: state.tags, tagCount: state.tagCount }
 }
 
 export default connect(mapStateToProps)(TagsFilter);

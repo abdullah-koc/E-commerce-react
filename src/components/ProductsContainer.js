@@ -106,7 +106,7 @@ const ProductsContainer = ({allProducts, mugProducts, shirtProducts}) => {
     }, [mugProducts, shirtProducts])
 
     return (
-        <Grid item xs={12} lg={6}>
+        <>
             <h3 className={classes.productsText}>Products</h3>
             <div className={clsx(classes.productsText, classes.buttons)}>
                 <ButtonGroup size="small">
@@ -125,7 +125,7 @@ const ProductsContainer = ({allProducts, mugProducts, shirtProducts}) => {
                     </Grid>
                 </Grid>
             </div>
-        </Grid>
+        </>
     );
 }
 

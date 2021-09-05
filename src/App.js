@@ -8,10 +8,10 @@ import SortingRadio from './components/SortingRadio';
 import BrandsFilter from './components/BrandsFilter';
 import TagsFilter from './components/TagsFilter';
 import ProductsContainer from './components/ProductsContainer';
-import {createStore} from "redux"
+import { createStore } from "redux"
 import reducer from "./reducer"
-import {Provider} from "react-redux" 
-import {Fetch} from "./components/Fetch"
+import { Provider } from "react-redux"
+import { Fetch } from "./components/Fetch"
 
 
 
@@ -61,10 +61,10 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
-  const {allProducts, mugProducts, shirtProducts, companies, companyCount, tags, counts} = Fetch();
+  const { allProducts, mugProducts, shirtProducts, companies, companyCount, tags, counts } = Fetch();
 
   let newTags = tags.map((tag) => {
-    return {tagName: tag, isChecked: false}
+    return { tagName: tag, isChecked: false }
   })
   const initialStore = {
     total: 0,
@@ -78,8 +78,8 @@ function App() {
     tags: newTags,
     tagCount: counts,
   }
-  
-  const store = createStore(reducer,initialStore)
+
+  const store = createStore(reducer, initialStore)
 
   return (
     <Provider store={store}>
@@ -88,12 +88,14 @@ function App() {
         <Grid container spacing={0}>
           <Grid item xs={12} lg={2}>
             <Grid container>
-              <Grid item xs={12} sm={6} md={4} lg={12}><div ><SortingRadio /></div></Grid>
-              <Grid item xs={12} sm={6} md={4} lg={12}><div ><BrandsFilter /></div></Grid>
-              <Grid item xs={12} sm={6} md={4} lg={12}><div ><TagsFilter /></div></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={12}><SortingRadio /></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={12}><BrandsFilter /></Grid>
+              <Grid item xs={12} sm={6} md={4} lg={12}><TagsFilter /></Grid>
             </Grid>
           </Grid>
-          <ProductsContainer/>
+          <Grid item xs={12} lg={6}>
+            <ProductsContainer/>
+          </Grid>
           <Grid item xs={12} lg={4} >
             <div className={classes.shoppingList}>
               <ShoppingList />
