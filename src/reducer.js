@@ -85,7 +85,11 @@ const reducer = (state, action) => {
         var newProducts = []
         let comps = state.companies
         let allprs = state.allProducts
+        let temp = 0
         for(let i = 0; i < comps.length; i++){
+            if(comps[i].isChecked){
+                temp++
+            }
             for(let j = 0; j < allprs.length; j++){
                 if(comps[i].isChecked){
                     if(allprs[j].manufacturer === comps[i].slug){
@@ -94,12 +98,16 @@ const reducer = (state, action) => {
                 }   
             }
         }
-        if(newProducts.length === 0){
+        if(temp === 0){
             newProducts = state.allProducts
         }
         let res = []
         let tags = state.tags
+        let tempCount = 0
         for(let i = 0; i < tags.length; i++){
+            if(tags[i].isChecked){
+                tempCount++
+            }
             for(let j = 0; j < newProducts.length; j++){
                 for(let k = 0; k < newProducts[j].tags.length; k++ ){
                     if(tags[i].isChecked){
@@ -110,7 +118,8 @@ const reducer = (state, action) => {
                 }
             }
         }
-        if(res.length === 0){
+
+        if(tempCount === 0){
             res = newProducts
         }
         const {mugs, shirts} = splitMugAndShirt(res)
@@ -123,7 +132,11 @@ const reducer = (state, action) => {
         var newProducts2 = []
         let tags = state.tags
         let allprs = state.allProducts
+        let temp = 0
         for(let i = 0; i < tags.length; i++){
+            if(tags[i].isChecked){
+                temp++
+            }
             for(let j = 0; j < allprs.length; j++){
                 for(let k = 0; k < allprs[j].tags.length; k++ ){
                     if(tags[i].isChecked){
@@ -134,12 +147,16 @@ const reducer = (state, action) => {
                 }
             }
         }
-        if(newProducts2.length === 0){
+        if(temp === 0){
             newProducts2 = state.allProducts
         }
         let res = []
         let comps = state.companies
+        let tempCount = 0
         for(let i = 0; i < comps.length; i++){
+            if(comps[i].isChecked){
+                tempCount++
+            }
             for(let j = 0; j < newProducts2.length; j++){
                 if(comps[i].isChecked){
                     if(newProducts2[j].manufacturer === comps[i].slug){
@@ -148,7 +165,7 @@ const reducer = (state, action) => {
                 }   
             }
         }
-        if(res.length === 0){
+        if(tempCount === 0){
             res = newProducts2
         }
         const {mugs, shirts} = splitMugAndShirt(res)
