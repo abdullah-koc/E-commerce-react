@@ -74,7 +74,7 @@ const TagsFilter = ({ tags, tagCount }) => {
         let filteredTags = []
         let filteredTagCounts = []
         tags.map((tag, index) => {
-            if(tag.tagName.toLowerCase().includes(e.target.value)){
+            if(tag.tagName.toLowerCase().includes((e.target.value).toLowerCase())){
                 filteredTags.push(tag)
                 filteredTagCounts.push(tagCount[index])
             }

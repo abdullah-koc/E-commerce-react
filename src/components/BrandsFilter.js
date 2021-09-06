@@ -77,7 +77,7 @@ const BrandsFilter = ({companies, companyCount}) => {
         let filteredBrands = []
         let filteredCounts = []
         companies.map((company, index) => {
-            if(company.slug.toLowerCase().includes(e.target.value)){
+            if(company.slug.toLowerCase().includes((e.target.value).toLowerCase())){
                 filteredBrands.push(company)
                 filteredCounts.push(companyCount[index])
             }
