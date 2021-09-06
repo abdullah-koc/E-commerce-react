@@ -95,7 +95,7 @@ const reducer = (state, action) => {
                     if(allprs[j].manufacturer === comps[i].slug){
                         newProducts.push(allprs[j])
                     }
-                }   
+                }  
             }
         }
         if(temp === 0){

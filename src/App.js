@@ -48,13 +48,19 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: "60px",
     },
     "@media screen and (max-width: 960px)": {
-      marginLeft: "32px",
+      marginLeft: "50px",
     },
-    "@media screen and (max-width: 600px)": {
-      marginLeft: "36px",
+    "@media screen and (max-width: 800px)": {
+      marginLeft: "40px",
+    },
+    "@media screen and (max-width: 630px)": {
+      marginLeft: "35px",
     },
     "@media screen and (max-width: 480px)": {
       marginLeft: "28px",
+    },
+    "@media screen and (max-width: 350px)": {
+      marginLeft: "22.5px",
     },
   },
 }));
