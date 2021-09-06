@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import SingleShoppingListItem from './SingleComponents/SingleShoppingListItem';
 import Grid from '@material-ui/core/Grid';
+import {Button} from "@material-ui/core"
 import {connect} from "react-redux"
 import {RiErrorWarningFill} from 'react-icons/ri';
 
@@ -20,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
             marginTop: "20px",
         },
     },
+    innerBox: {
+        height: "100%",
+        width: "100%", 
+        maxHeight: "360px",
+        overflowY: "auto",
+    },
     emptyText: {
         display: "flex",
         justifyContent: "center",
@@ -37,20 +44,30 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         float: "right"
+    },
+    clearButton:{
+        display: "flex",
+        justifyContent: "center",
+        marginBottom: "10px",
+        textTransform: "none"
+    },
+    buttonColor: {
+        color: "#ba000d"
     }
 }));
 
 
-const ShoppingList = ({total, productsInList}) => {
+const ShoppingList = ({total, productsInList, clearShoppingBox}) => {
     const classes = useStyles();    
     return (
         <div className={classes.box}>
             {productsInList.length === 0 && <div className={classes.emptyText}><RiErrorWarningFill size={30}/> Basket is empty.</div>}
-            {productsInList.map((productInList) => <SingleShoppingListItem productID={productInList.added} productName={productInList.name} amount={productInList.amount} productPrice={productInList.price}/>)}
+            <div className={classes.innerBox}>{productsInList.map((productInList) => <SingleShoppingListItem productID={productInList.added} productName={productInList.name} amount={productInList.amount} productPrice={productInList.price}/>)}</div>
             {productsInList.length !== 0 && <Grid container>
                 <Grid item xs={7}></Grid>
                 <Grid item xs={5}><div className={classes.totalAmount}>₺ {total.toFixed(2) === "-0.00" ? "0.00" : total.toFixed(2)}</div></Grid>
             </Grid>}
+            {productsInList.length !== 0 && <div className={classes.clearButton}><Button className={classes.buttonColor} onClick={()=> clearShoppingBox()} size="small" variant="outlined" color="secondary" >Clear Shopping Box</Button></div>}
         </div>
     );
 }
@@ -59,5 +76,13 @@ const mapStateToProps = (state) => {
     return{total: state.total, productsInList: state.productsInList}
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clearShoppingBox: () => dispatch({type: "CLEAR_SHOPPING_BOX"})
+    }
+}
 
-export default connect(mapStateToProps)(ShoppingList);
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);

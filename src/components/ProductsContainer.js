@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "20px",
         marginLeft: "70px"
       },
+      "@media screen and (min-width: 1280px) and (max-width: 1380px)": {
+        marginLeft: "80px"
+      },
       "@media screen and (max-width: 600px)": {
         marginLeft: "-18px",
       },
@@ -55,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
       "@media screen and (max-width: 600px)": {
         marginLeft: "-18px",
       },
+      "@media screen and (min-width: 1280px) and (max-width: 1380px)": {
+        marginLeft: "80px"
+      },
       loadinggif: {
         display: "block",
         marginLeft: "auto",
@@ -63,7 +69,11 @@ const useStyles = makeStyles((theme) => ({
       }
     },
     buttons: {
-      marginBottom: "20px"
+      marginBottom: "20px",
+      "@media screen and (min-width: 1280px) and (max-width: 1380px)": {
+        marginLeft: "80px"
+      },
+
     },
     noResult: {
       marginTop: "20px",

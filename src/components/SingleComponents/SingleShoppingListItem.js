@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
+import { RiDeleteBin4Fill } from "react-icons/ri"
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import { connect } from "react-redux"
@@ -48,18 +49,30 @@ const useStyles = makeStyles((theme) => ({
     },
     centerItem: {
         textAlign: "center",
+    },
+    deleteItem: {
+        minWidth: "34px",
+        minHeight: "34px",
+        maxWidth: "34px",
+        maxHeight: "34px",
+        textAlign: "center",
+        marginTop: "-2px",
+        marginLeft: "5px",
+        color: "#ba000d"
     }
 }));
 
-const SingleShoppingListItem = ({ productName, productID, productPrice, amount, increaseAmount, decreaseAmount }) => {
+const SingleShoppingListItem = ({ productName, productID, productPrice, amount, increaseAmount, decreaseAmount, deleteFromList }) => {
     const classes = useStyles();
     return (
         <div className={classes.singleItem}>
             <Grid container>
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                     <div>{productName}</div>
                     <div>{productPrice} ₺</div>
+                    
                 </Grid>
+                <Grid item xs={1}><div><Button onClick={() => deleteFromList()} className={classes.deleteItem}><RiDeleteBin4Fill size={20}/></Button></div></Grid>
                 <Grid item xs={5}>
                     <Grid container className={classes.operationsContainer}>
                         <Grid item xs={5}><Button onClick={() => decreaseAmount()} className={clsx(classes.centerItem, classes.plusMinus)}><AiOutlineMinus /></Button></Grid>
@@ -77,7 +90,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     const { productID, amount } = ownProps
     return {
         increaseAmount: () => dispatch({ type: "INCREASE_AMOUNT", payload: { productID, amount } }),
-        decreaseAmount: () => dispatch({ type: "DECREASE_AMOUNT", payload: { productID, amount } })
+        decreaseAmount: () => dispatch({ type: "DECREASE_AMOUNT", payload: { productID, amount } }),
+        deleteFromList: () => dispatch({ type: "DELETE_FROM_LIST", payload: { productID, amount } }),
     }
 
 }

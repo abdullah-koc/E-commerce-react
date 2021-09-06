@@ -91,7 +91,7 @@ function App() {
     <Provider store={store}>
       <Navbar />
       <div className={classes.container}>
-        <Grid container spacing={0}>
+        <Grid container spacing={5}>
           <Grid item xs={12} lg={2}>
             <Grid container>
               <Grid item xs={12} sm={6} md={4} lg={12}><SortingRadio /></Grid>

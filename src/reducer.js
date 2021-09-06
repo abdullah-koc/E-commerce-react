@@ -1,5 +1,5 @@
 import {ADD_TO_CARD, INCREASE_AMOUNT, DECREASE_AMOUNT, LOW_TO_HIGH, HIGH_TO_LOW, NEW_TO_OLD
-, OLD_TO_NEW, CHANGE_CHECKED_BRANDFILTER, CHANGE_CHECKED_TAGFILTER} from "./actions"
+, OLD_TO_NEW, CHANGE_CHECKED_BRANDFILTER, CHANGE_CHECKED_TAGFILTER, CLEAR_SHOPPING_BOX, DELETE_FROM_LIST} from "./actions"
 
 function sortItems(arr = [], prop = "", type = 1) {
     arr.sort(
@@ -170,6 +170,23 @@ const reducer = (state, action) => {
         }
         const {mugs, shirts} = splitMugAndShirt(res)
         return {...state, products:res, mugProducts: mugs, shirtProducts: shirts}
+    }
+    else if(action.type === CLEAR_SHOPPING_BOX) {
+        for(let i = 0; i < state.productsInList.length; i++){
+            state.productsInList[i].amount = 0
+        }
+        return {...state, productsInList: [], total: 0}
+    }
+    else if(action.type === DELETE_FROM_LIST){
+        const tempPr = state.allProducts;
+        const pr = tempPr.find((product) => product.added === action.payload.productID)
+        const amountTemp = pr.amount
+        pr.amount = 0
+        console.log(pr)
+        let newList = state.productsInList
+        newList = newList.filter((product) => product.added !== action.payload.productID)
+        return {...state, productsInList: newList, total: state.total - (amountTemp * pr.price)}
+
     }
     return state;
 }
