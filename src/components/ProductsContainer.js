@@ -64,6 +64,10 @@ const useStyles = makeStyles((theme) => ({
     },
     buttons: {
       marginBottom: "20px"
+    },
+    noResult: {
+      marginTop: "20px",
+      fontSize: "14px"
     }
   
   }));
@@ -87,10 +91,10 @@ const ProductsContainer = ({allProducts, mugProducts, shirtProducts}) => {
     };
 
     React.useEffect(() => {
-        if (allProducts.length !== 0) {
+        if (curMugs.length !== 0 || curShirts.length !== 0) {
             setLoading(false)
         }
-    }, [allProducts])
+    }, [curMugs, curShirts])
 
 
     React.useEffect(() => {
@@ -119,6 +123,8 @@ const ProductsContainer = ({allProducts, mugProducts, shirtProducts}) => {
                     {loading && <div className={classes.loadinggif}><img src={loadingGIF} alt="loading" /></div>}
                     {mugOrShirt ? curShirts.map((product => <Grid key={product.added} item xs={6} sm={4} md={3}><SingleProduct id={product.added} productName={product.name} price={product.price} /></Grid>)) :
                         curMugs.map((product => <Grid key={product.added} item xs={6} sm={4} md={3}><SingleProduct productName={product.name} id={product.added} price={product.price} /></Grid>))}
+                    {(!loading && !mugOrShirt && mugProducts.length === 0) && <div className={classes.noResult}>Your filters did not bring any result for mugs.</div>}
+                    {(!loading && mugOrShirt && shirtProducts.length === 0) && <div className={classes.noResult}>Your filters did not bring any result for shirts.</div>}
                     <Grid className={classes.paginate} item xs={12}>
                         {!mugOrShirt && <Pagination count={pagesMug.length} page={mugPage +1} shape="rounded" onChange={handleMugChange} />}
                         {mugOrShirt && <Pagination count={pagesShirt.length} page={shirtPage + 1} shape="rounded" onChange={handleShirtChange} />}
