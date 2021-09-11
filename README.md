@@ -1,2 +1,2 @@
 # E-Commerce-challenge
-E commerce project for react internship
+Basic e-commerce website made by react.
